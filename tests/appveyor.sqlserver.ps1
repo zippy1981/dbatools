@@ -53,3 +53,5 @@ foreach ($file in (Get-ChildItem C:\github\appveyor-lab\ola\*.sql)) {
 Get-DbaDatabase -SqlInstance localhost
 Get-DbaLogin -SqlInstance localhost
 Get-DbaAgentJob -SqlInstance localhost\sql2016
+
+Get-Service | Format-Table -AutoSize
