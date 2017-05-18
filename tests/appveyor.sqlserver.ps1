@@ -54,4 +54,4 @@ Get-DbaDatabase -SqlInstance localhost
 Get-DbaLogin -SqlInstance localhost
 Get-DbaAgentJob -SqlInstance localhost\sql2016
 
-Get-Service | Format-Table -AutoSize
+Get-Service *sqlagent* | select *
