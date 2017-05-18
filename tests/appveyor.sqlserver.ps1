@@ -42,7 +42,7 @@ foreach ($instance in $instances) {
 	Start-Service "MSSQL`$$instance"
 }
 
-Start-Service 'MSSQLAgent$sql2016'
+Start-Service 'SQLAgent$sql2016'
 
 # Add some jobs to the sql2008r2sp2 instance (1433 = default)
 foreach ($file in (Get-ChildItem C:\github\appveyor-lab\ola\*.sql)) {
