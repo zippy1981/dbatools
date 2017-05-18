@@ -42,15 +42,14 @@ foreach ($instance in $instances) {
 	Start-Service "MSSQL`$$instance"
 }
 
+Start-Service 'MSSQLAgent$sql2016'
+
 # Add some jobs to the sql2008r2sp2 instance (1433 = default)
 foreach ($file in (Get-ChildItem C:\github\appveyor-lab\ola\*.sql)) {
 	Write-Output "Executing ola script - $file"
-	Invoke-DbaSqlCmd -ServerInstance localhost -InputFile $file -Verbose
+	Invoke-DbaSqlCmd -ServerInstance localhost\sql2016 -InputFile $file -Verbose
 } 
 
-#Get-DbaDatabase -SqlInstance localhost
-#Get-DbaLogin -SqlInstance localhost
-Get-DbaAgentJob -SqlInstance localhost
-$server = Connect-DbaSqlServer -SqlServer localhost
-$server.JobServer.Jobs
-$server.JobServer
+Get-DbaDatabase -SqlInstance localhost
+Get-DbaLogin -SqlInstance localhost
+Get-DbaAgentJob -SqlInstance localhost\sql2016
