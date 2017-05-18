@@ -42,6 +42,7 @@ foreach ($instance in $instances) {
 	Start-Service "MSSQL`$$instance"
 }
 
+Set-Service -Name 'SQLAgent$sql2016' -StartupType Automatic
 Start-Service 'SQLAgent$sql2016'
 
 # Add some jobs to the sql2008r2sp2 instance (1433 = default)
