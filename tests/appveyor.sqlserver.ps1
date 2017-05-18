@@ -52,4 +52,4 @@ Get-DbaDatabase -SqlInstance localhost
 Get-DbaLogin -SqlInstance localhost
 Get-DbaAgentJob -SqlInstance localhost
 $server = Connect-DbaSqlServer -SqlServer localhost
-$server.JobServer.Jobs
+$server.JobServer.Jobs 
