@@ -7,9 +7,9 @@ $sql2008 = "localhost\sql2008r2sp2"
 $sql2016 = "localhost\sql2016"
 
 Write-Output "Creating migration & backup directories"
+New-Item -Path C:\github -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 New-Item -Path C:\projects\migration -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 New-Item -Path C:\projects\backups -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
-New-Item -Path C:\github -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 
 Write-Output "Cloning lab materials"
 git clone -q --branch=master https://github.com/sqlcollaborative/appveyor-lab.git C:\github\appveyor-lab
@@ -45,13 +45,8 @@ foreach ($instance in $instances) {
 Set-Service -Name 'SQLAgent$sql2016' -StartupType Automatic
 Start-Service 'SQLAgent$sql2016'
 
-Get-DbaDatabase -SqlInstance localhost
-Get-DbaLogin -SqlInstance localhost
-
 # Add some jobs to the sql2008r2sp2 instance (1433 = default)
 foreach ($file in (Get-ChildItem C:\github\appveyor-lab\ola\*.sql)) {
 	Write-Output "Executing ola script - $file"
 	Invoke-DbaSqlCmd -ServerInstance localhost\sql2016 -InputFile $file
 }
-
-Get-DbaAgentJob -SqlInstance localhost\sql2016
