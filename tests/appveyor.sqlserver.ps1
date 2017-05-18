@@ -20,6 +20,8 @@ git clone -q --branch=master https://github.com/sqlcollaborative/appveyor-lab.gi
 # Write-Output "Creating network share workaround"
 # New-SmbShare -Name migration -path C:\projects\migration -FullAccess 'ANONYMOUS LOGON', 'Everyone' | Out-Null
 
+Set-Service -Name 'SQLAgent$sql2016' -StartupType Automatic
+
 $instances = "sql2016", "sql2008r2sp2"
 
 foreach ($instance in $instances) {
@@ -40,10 +42,11 @@ foreach ($instance in $instances) {
 	
 	Write-Output "Starting $instance"
 	Start-Service "MSSQL`$$instance"
+	
+	if ($instance -eq "sql2016") {
+		Start-Service 'SQLAgent$sql2016'
+	}
 }
-
-Set-Service -Name 'SQLAgent$sql2016' -StartupType Automatic
-Start-Service 'SQLAgent$sql2016'
 
 # Add some jobs to the sql2008r2sp2 instance (1433 = default)
 foreach ($file in (Get-ChildItem C:\github\appveyor-lab\ola\*.sql)) {
