@@ -47,3 +47,7 @@ foreach ($file in (Get-ChildItem C:\github\appveyor-lab\ola\*.sql)) {
 	Write-Output "Executing ola script - $file"
 	Invoke-DbaSqlCmd -ServerInstance localhost -InputFile $file
 }
+
+Get-DbaDatabase -SqlInstance localhost
+Get-DbaLogin -SqlInstance localhost
+Get-DbaAgentJob -SqlInstance localhost
