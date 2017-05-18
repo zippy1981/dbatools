@@ -51,3 +51,5 @@ foreach ($file in (Get-ChildItem C:\github\appveyor-lab\ola\*.sql)) {
 Get-DbaDatabase -SqlInstance localhost
 Get-DbaLogin -SqlInstance localhost
 Get-DbaAgentJob -SqlInstance localhost
+$server = Connect-DbaSqlServer -SqlServer localhost
+$server.JobServer.Jobs
