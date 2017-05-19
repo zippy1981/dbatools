@@ -21,14 +21,14 @@ Describe "Backup-DbaDatabase Integration Tests" -Tags "Integrationtests" {
 	Context "Database should backup 1 database" {
 		$results = Backup-DbaDatabase -SqlInstance localhost -BackupDirectory C:\temp\backups -Database master
 		It "Database backup object count should be 1" {
-			$results.DatabaseName.count | Should Be 1
+			$results.DatabaseName.Count | Should Be 1
 		}
 	}
 	
 	Context "Database should backup 2 databases" {
 		$results = Backup-DbaDatabase -SqlInstance localhost -BackupDirectory C:\temp\backups -Database master, msdb
 		It "Database backup object count should be 2" {
-			$results.count | Should Be 2
+			$results.DatabaseName.Count  | Should Be 2
 		}
 	}
 	
