@@ -100,7 +100,7 @@ Function Restore-DBFromFilteredArray
 						Write-Verbose "$FunctionName - Set $DbName single_user to kill processes"
 						Stop-DbaProcess -SqlServer $Server -Databases $Dbname -WarningAction Silentlycontinue
 						Invoke-DbaSqlcmd -ServerInstance:$SqlServer -Credential:$SqlCredential -query "Alter database $DbName set offline with rollback immediate; alter database $DbName set restricted_user; Alter database $DbName set online with rollback immediate" -database master
-
+						$server.ConnectionContext.Connect()
 					}
 					catch
 					{
@@ -115,6 +115,7 @@ Function Restore-DBFromFilteredArray
 			}
 
 		}
+
 		$MissingFiles = @()
 		if ($TrustDbBackupHistory)
 		{
@@ -141,7 +142,6 @@ Function Restore-DBFromFilteredArray
 		if ($if -ne $null){
 			$RestorePoints  += @([PSCustomObject]@{order=[Decimal]2;'Files' = $if.group})
 		}
-		($InternalFiles | Where-Object {$_.BackupTypeDescription -eq 'Transaction Log'} | Group-Object BackupSetGuid)
 
 		foreach ($if in ($InternalFiles | Where-Object {$_.BackupTypeDescription -eq 'Transaction Log'} | Group-Object BackupSetGuid))
  		{
