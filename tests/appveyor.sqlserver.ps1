@@ -77,7 +77,7 @@ foreach ($basekey in "HKLM:\SOFTWARE\WOW6432Node\Microsoft\MSSQLServer", "HKLM:\
 	}
 	
 	Write-Output "Creating/updating alias for $SqlServer for $architecture"
-	$null = New-ItemProperty -Path $connect -Name sql2016 -Value "DBMSSOCN,localhost\sql2016" -PropertyType String -Force
+	$null = New-ItemProperty -Path $connect -Name sql2016 -Value "DBMSSOCN,localhost\\sql2016" -PropertyType String -Force
 	$null = New-ItemProperty -Path $connect -Name sql2008 -Value "DBMSSOCN,localhost" -PropertyType String -Force
 	$null = New-ItemProperty -Path $connect -Name sql2008r2 -Value "DBMSSOCN,localhost" -PropertyType String -Force
 }
