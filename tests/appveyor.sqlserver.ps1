@@ -76,16 +76,16 @@ foreach ($basekey in "HKLM:\SOFTWARE\WOW6432Node\Microsoft\MSSQLServer", "HKLM:\
 		$architecture = "64-bit"
 	}
 	
-	Write-Output "Creating/updating alias for $SqlServer for $architecture"
-	$null = New-ItemProperty -Path $connect -Name sql2016 -Value "DBMSSOCN,localhost\\sql2016" -PropertyType String -Force
+	Write-Output "Creating SQL Server aliases for $architecture"
+	$null = New-ItemProperty -Path $connect -Name sql2016 -Value "DBMSSOCN,localhost\sql2016" -PropertyType String -Force
 	$null = New-ItemProperty -Path $connect -Name sql2008 -Value "DBMSSOCN,localhost" -PropertyType String -Force
 	$null = New-ItemProperty -Path $connect -Name sql2008r2 -Value "DBMSSOCN,localhost" -PropertyType String -Force
 }
-
+(Connect-DbaSqlServer -SqlServer sql2016).Name
 # Add some jobs to the sql2008r2sp2 instance (1433 = default)
 foreach ($file in (Get-ChildItem C:\github\appveyor-lab\ola\*.sql)) {
 	Write-Output "Executing ola scripts - $file"
-	Invoke-DbaSqlCmd -ServerInstance sql2016 -InputFile $file
+	Invoke-DbaSqlCmd -ServerInstance localhost\sql2016 -InputFile $file
 }
 
 Invoke-Pester C:\projects\dbatools\tests\Restore-DbaDatabase.Tests.ps1
