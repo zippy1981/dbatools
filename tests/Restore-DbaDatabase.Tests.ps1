@@ -61,8 +61,4 @@ Describe "Restore-DbaDatabase Integration Tests" -Tags "Integrationtests" {
 			$results.ForEach{ $_.Status | Should Be "Dropped" }
 		}
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> refs/remotes/origin/development

@@ -60,8 +60,3 @@ foreach ($file in (Get-ChildItem C:\github\appveyor-lab\ola\*.sql)) {
 	Write-Output "Executing ola scripts - $file"
 	Invoke-DbaSqlCmd -ServerInstance localhost\sql2016 -InputFile $file
 }
-<<<<<<< HEAD
-
-Invoke-Pester C:\projects\dbatools\tests\Backup-DbaDatabase.Tests.ps1
-=======
->>>>>>> refs/remotes/origin/development
