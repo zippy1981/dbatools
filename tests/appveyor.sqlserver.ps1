@@ -1,7 +1,7 @@
 # Imports some assemblies
 Write-Output "Importing dbatools"
 try {
-	Import-Module C:\github\dbatools\dbatools.psd1
+	Import-Module C:\github\dbatools\dbatools.psd1 -ErrorAction Stop
 }
 catch {
 	Import-Module C:\projects\dbatools\dbatools.psd1
