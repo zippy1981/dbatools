@@ -1,24 +1,17 @@
 # Imports some assemblies
 Write-Output "Importing dbatools"
-Import-Module C:\projects\dbatools\dbatools.psd1
+Import-Module C:\github\dbatools\dbatools.psd1
 
 # This script spins up two local instances
 $sql2008 = "localhost\sql2008r2sp2"
 $sql2016 = "localhost\sql2016"
 
 Write-Output "Creating migration & backup directories"
-New-Item -Path C:\github -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
-New-Item -Path C:\projects\migration -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
-New-Item -Path C:\projects\backups -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
+New-Item -Path C:\temp\migration -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
+New-Item -Path C:\temp\backups -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 
 Write-Output "Cloning lab materials"
 git clone -q --branch=master https://github.com/sqlcollaborative/appveyor-lab.git C:\github\appveyor-lab
-
-# Write-Output "Listing directory"
-# Get-ChildItem C:\github\appveyor-lab\sql2008-backups
-
-# Write-Output "Creating network share workaround"
-# New-SmbShare -Name migration -path C:\projects\migration -FullAccess 'ANONYMOUS LOGON', 'Everyone' | Out-Null
 
 Write-Output "Setting sql2016 Agent to Automatic"
 Set-Service -Name 'SQLAgent$sql2016' -StartupType Automatic
@@ -49,9 +42,44 @@ foreach ($instance in $instances) {
 		Start-Service 'SQLAgent$sql2016'
 	}
 }
- 
+
+Write-Output "Add aliases"
+foreach ($basekey in "HKLM:\SOFTWARE\WOW6432Node\Microsoft\MSSQLServer", "HKLM:\SOFTWARE\Microsoft\MSSQLServer") {
+	if ((Test-Path $basekey) -eq $false) {
+		throw "Base key ($basekey) does not exist. Quitting."
+	}
+	
+	$client = "$basekey\Client"
+	
+	if ((Test-Path $client) -eq $false) {
+		Write-Output "Creating $client key"
+		$null = New-Item -Path $client -Force
+	}
+	
+	$connect = "$client\ConnectTo"
+	
+	if ((Test-Path $connect) -eq $false) {
+		Write-Output "Creating $connect key"
+		$null = New-Item -Path $connect -Force
+	}
+	
+	if ($basekey -like "*WOW64*") {
+		$architecture = "32-bit"
+	}
+	else {
+		$architecture = "64-bit"
+	}
+	
+	Write-Output "Creating/updating alias for $SqlServer for $architecture"
+	$null = New-ItemProperty -Path $connect -Name sql2016 -Value "DBMSSOCN,localhost\sql2016" -PropertyType String -Force
+	$null = New-ItemProperty -Path $connect -Name sql2008 -Value "DBMSSOCN,localhost" -PropertyType String -Force
+	$null = New-ItemProperty -Path $connect -Name sql2008r2 -Value "DBMSSOCN,localhost" -PropertyType String -Force
+}
+
 # Add some jobs to the sql2008r2sp2 instance (1433 = default)
 foreach ($file in (Get-ChildItem C:\github\appveyor-lab\ola\*.sql)) {
 	Write-Output "Executing ola scripts - $file"
 	Invoke-DbaSqlCmd -ServerInstance localhost\sql2016 -InputFile $file
 }
+
+Invoke-Pester C:\github\dbatools\tests\Restore-DbaDatabase.Tests.ps1
