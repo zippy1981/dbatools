@@ -48,7 +48,7 @@ do {
 	Write-Warning "Waiting for SQL Agent to start"
 	Start-Sleep 1
 }
-while ((Get-Service 'SQLAgent$sql2016').Status -ne 'Running' -or $i++ -gt 10)
+while ((Get-Service 'SQLAgent$sql2016').Status -ne 'Running' -and $i++ -lt 10)
 
 # Add some jobs to the sql2008r2sp2 instance (1433 = default)
 foreach ($file in (Get-ChildItem C:\github\appveyor-lab\ola\*.sql)) {
