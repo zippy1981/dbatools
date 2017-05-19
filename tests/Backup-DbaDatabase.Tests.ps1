@@ -21,7 +21,7 @@ Describe "Backup-DbaDatabase Integration Tests" -Tags "Integrationtests" {
 	Context "Database should backup 1 database" {
 		$results = Backup-DbaDatabase -SqlInstance localhost -BackupDirectory C:\temp\backups -Database master
 		It "Database backup object count should be 1" {
-			$results.count | Should Be 1
+			$results.DatabaseName.count | Should Be 1
 		}
 	}
 	
