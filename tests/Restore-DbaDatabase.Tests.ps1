@@ -56,8 +56,9 @@ Describe "Restore-DbaDatabase Integration Tests" -Tags "Integrationtests" {
 	}
 	
 	Context "All user databases are removed" {
-		$results = Get-DbaDatabase -SqlInstance localhost -NoSystemDb | Remove-DbaDatabase
+		$results = Get-DbaDatabase -SqlInstance localhost -NoSystemDb
 		$results
+		$results = $results | Remove-DbaDatabase
 		It "Should say the status was dropped" {
 			$results.ForEach{ $_.RestoreComplete | Should Be "Dropped" }
 		}
