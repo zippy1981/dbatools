@@ -7,20 +7,11 @@ $sql2008 = "localhost\sql2008r2sp2"
 $sql2016 = "localhost\sql2016"
 
 Write-Output "Creating migration & backup directories"
-<<<<<<< HEAD
 New-Item -Path C:\temp\migration -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 New-Item -Path C:\temp\backups -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
-=======
-New-Item -Path C:\github -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
-New-Item -Path C:\projects\migration -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
-New-Item -Path C:\projects\backups -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
->>>>>>> refs/remotes/origin/development
 
 Write-Output "Cloning lab materials"
 git clone -q --branch=master https://github.com/sqlcollaborative/appveyor-lab.git C:\github\appveyor-lab
-
-Write-Output "Setting sql2016 Agent to Automatic"
-Set-Service -Name 'SQLAgent$sql2016' -StartupType Automatic
 
 Write-Output "Setting sql2016 Agent to Automatic"
 Set-Service -Name 'SQLAgent$sql2016' -StartupType Automatic
@@ -50,7 +41,6 @@ foreach ($instance in $instances) {
 		Write-Output "Starting Agent for $instance"
 		Start-Service 'SQLAgent$sql2016'
 	}
-<<<<<<< HEAD
 }
 
 Write-Output "Add aliases"
@@ -84,18 +74,12 @@ foreach ($basekey in "HKLM:\SOFTWARE\WOW6432Node\Microsoft\MSSQLServer", "HKLM:\
 	$null = New-ItemProperty -Path $connect -Name sql2016 -Value "DBMSSOCN,localhost\sql2016" -PropertyType String -Force
 	$null = New-ItemProperty -Path $connect -Name sql2008 -Value "DBMSSOCN,localhost" -PropertyType String -Force
 	$null = New-ItemProperty -Path $connect -Name sql2008r2 -Value "DBMSSOCN,localhost" -PropertyType String -Force
-=======
->>>>>>> refs/remotes/origin/development
 }
 
 # Add some jobs to the sql2008r2sp2 instance (1433 = default)
 foreach ($file in (Get-ChildItem C:\github\appveyor-lab\ola\*.sql)) {
 	Write-Output "Executing ola scripts - $file"
 	Invoke-DbaSqlCmd -ServerInstance localhost\sql2016 -InputFile $file
-<<<<<<< HEAD
 }
 
 Invoke-Pester C:\github\dbatools\tests\Restore-DbaDatabase.Tests.ps1
-=======
-}
->>>>>>> refs/remotes/origin/development
