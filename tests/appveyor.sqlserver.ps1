@@ -49,38 +49,11 @@ foreach ($instance in $instances) {
 	}
 }
 
-Write-Output "Add aliases"
-foreach ($basekey in "HKLM:\SOFTWARE\WOW6432Node\Microsoft\MSSQLServer", "HKLM:\SOFTWARE\Microsoft\MSSQLServer") {
-	if ((Test-Path $basekey) -eq $false) {
-		throw "Base key ($basekey) does not exist. Quitting."
-	}
-	
-	$client = "$basekey\Client"
-	
-	if ((Test-Path $client) -eq $false) {
-		Write-Output "Creating $client key"
-		$null = New-Item -Path $client -Force
-	}
-	
-	$connect = "$client\ConnectTo"
-	
-	if ((Test-Path $connect) -eq $false) {
-		Write-Output "Creating $connect key"
-		$null = New-Item -Path $connect -Force
-	}
-	
-	if ($basekey -like "*WOW64*") {
-		$architecture = "32-bit"
-	}
-	else {
-		$architecture = "64-bit"
-	}
-	
-	Write-Output "Creating SQL Server aliases for $architecture"
-	$null = New-ItemProperty -Path $connect -Name sql2016 -Value "DBMSSOCN,localhost\sql2016" -PropertyType String -Force
-	$null = New-ItemProperty -Path $connect -Name sql2008 -Value "DBMSSOCN,localhost" -PropertyType String -Force
-	$null = New-ItemProperty -Path $connect -Name sql2008r2 -Value "DBMSSOCN,localhost" -PropertyType String -Force
+do {
+	Write-Warning "Waiting for SQL Agent to start"
+	Start-Sleep 1
 }
+while ((Get-Service 'SQLAgent$sql2016').Status -ne 'Running' -or $i++ -gt 10)
 
 # Add some jobs to the sql2008r2sp2 instance (1433 = default)
 foreach ($file in (Get-ChildItem C:\github\appveyor-lab\ola\*.sql)) {
