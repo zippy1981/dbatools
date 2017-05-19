@@ -61,4 +61,4 @@ foreach ($file in (Get-ChildItem C:\github\appveyor-lab\ola\*.sql)) {
 	Invoke-DbaSqlCmd -ServerInstance localhost\sql2016 -InputFile $file
 }
 
-Invoke-Pester C:\projects\dbatools\tests\Restore-DbaDatabase.Tests.ps1
+Invoke-Pester C:\projects\dbatools\tests\Backup-DbaDatabase.Tests.ps1
