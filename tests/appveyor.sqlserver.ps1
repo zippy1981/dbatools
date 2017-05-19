@@ -1,11 +1,6 @@
 # Imports some assemblies
 Write-Output "Importing dbatools"
-try {
-	Import-Module C:\github\dbatools\dbatools.psd1 -ErrorAction Stop
-}
-catch {
-	Import-Module C:\projects\dbatools\dbatools.psd1
-}
+Import-Module C:\github\dbatools\dbatools.psd1 -ErrorAction Stop
 
 # This script spins up two local instances
 $sql2008 = "localhost\sql2008r2sp2"
