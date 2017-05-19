@@ -1,12 +1,18 @@
 # Imports some assemblies
 Write-Output "Importing dbatools"
-Import-Module C:\github\dbatools\dbatools.psd1
+try {
+	Import-Module C:\github\dbatools\dbatools.psd1
+}
+catch {
+	Import-Module C:\projects\dbatools\dbatools.psd1
+}
 
 # This script spins up two local instances
 $sql2008 = "localhost\sql2008r2sp2"
 $sql2016 = "localhost\sql2016"
 
 Write-Output "Creating migration & backup directories"
+New-Item -Path C:\github -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 New-Item -Path C:\temp\migration -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 New-Item -Path C:\temp\backups -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 
