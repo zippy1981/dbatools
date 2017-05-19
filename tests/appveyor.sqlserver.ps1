@@ -85,7 +85,7 @@ foreach ($basekey in "HKLM:\SOFTWARE\WOW6432Node\Microsoft\MSSQLServer", "HKLM:\
 # Add some jobs to the sql2008r2sp2 instance (1433 = default)
 foreach ($file in (Get-ChildItem C:\github\appveyor-lab\ola\*.sql)) {
 	Write-Output "Executing ola scripts - $file"
-	Invoke-DbaSqlCmd -ServerInstance sql2016 -InputFile $file
+	Invoke-DbaSqlCmd -ServerInstance sql2008 -InputFile $file
 }
 
 Invoke-Pester C:\projects\dbatools\tests\Restore-DbaDatabase.Tests.ps1
