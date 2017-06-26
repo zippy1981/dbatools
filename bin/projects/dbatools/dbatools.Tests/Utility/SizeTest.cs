@@ -7,6 +7,15 @@ namespace Sqlcollaborative.Dbatools.Utility
     public class SizeTest
     {
         [TestMethod]
+        public void TestArithmitic()
+        {
+            Assert.AreEqual((Size) 4, new Size(2) + 2);
+            Assert.AreEqual((Size) 4, new Size(6) - 2);
+            Assert.AreEqual((Size) 4, new Size(2) + 2);
+            Assert.AreEqual((Size) 4, new Size(6) - 2);
+        }
+
+        [TestMethod]
         public void TestDefaultContrustor()
         {
             var size = new Size();
@@ -23,7 +32,16 @@ namespace Sqlcollaborative.Dbatools.Utility
         }
         
         [TestMethod]
-        public void TestCompareTo()
+        public void TestCompareToObject()
+        {
+            var sizes = new[] { 42, 56, 42 };
+            Assert.AreEqual(-1, ((Size) sizes[0]).CompareTo(sizes[1]));
+            Assert.AreEqual(0, ((Size)sizes[0]).CompareTo(sizes[2]));
+            Assert.AreEqual(1, ((Size)sizes[1]).CompareTo(sizes[2]));
+        }
+        
+        [TestMethod]
+        public void TestCompareToSize()
         {
             var sizes = new[] { new Size(42), new Size(56), new Size(42)};
             Assert.AreEqual(-1, sizes[0].CompareTo(sizes[1]));
