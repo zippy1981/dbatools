@@ -96,7 +96,13 @@ if (-not $Finalize) {
 	Write-Output "Testing with PowerShell $PSVersion"
 	Import-Module Pester
 	Set-Variable ProgressPreference -Value SilentlyContinue
-	Invoke-Pester -Script $AllScenarioTests -Show None -OutputFormat NUnitXml -OutputFile "$ModuleBase\$TestFile" -PassThru | Export-Clixml -Path "$ModuleBase\PesterResults$PSVersion.xml"
+	Invoke-Pester `
+		-Script $AllScenarioTests `
+		-Show None `
+		-OutputFormat NUnitXml `
+		-OutputFile "$ModuleBase\$TestFile" `
+		-CodeCoverage (Get-ChildItem .\lib -File -Recurse -Include *.ps1)
+		-PassThru | Export-Clixml -Path "$ModuleBase\PesterResults$PSVersion.xml"
 }
 else {
 	# Unsure why we're uploading so I removed it for now
