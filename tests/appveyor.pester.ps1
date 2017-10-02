@@ -101,7 +101,7 @@ if (-not $Finalize) {
 		-Show None `
 		-OutputFormat NUnitXml `
 		-OutputFile "$ModuleBase\$TestFile" `
-		-CodeCoverage (Get-ChildItem .\lib -File -Recurse -Include *.ps1)
+		-CodeCoverage (Get-ChildItem .\functions,.\internal,.\option -File -Recurse -Include *.ps1)
 		-PassThru | Export-Clixml -Path "$ModuleBase\PesterResults$PSVersion.xml"
 }
 else {
