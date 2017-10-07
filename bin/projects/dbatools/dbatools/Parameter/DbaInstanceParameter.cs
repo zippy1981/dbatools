@@ -21,7 +21,7 @@ namespace Sqlcollaborative.Dbatools.Parameter
         [ParameterContract(ParameterContractType.Field, ParameterContractBehavior.Mandatory)]
         public string ComputerName
         {
-            get { return _ComputerName; }
+            get { return _computerName; }
         }
 
         /// <summary>
@@ -32,9 +32,9 @@ namespace Sqlcollaborative.Dbatools.Parameter
         {
             get
             {
-                if (String.IsNullOrEmpty(_InstanceName))
+                if (String.IsNullOrEmpty(_instanceName))
                     return "MSSQLSERVER";
-                return _InstanceName;
+                return _instanceName;
             }
         }
 
@@ -46,9 +46,9 @@ namespace Sqlcollaborative.Dbatools.Parameter
         {
             get
             {
-                if (_Port == 0 && String.IsNullOrEmpty(_InstanceName))
+                if (_port == 0 && String.IsNullOrEmpty(_instanceName))
                     return 1433;
-                return _Port;
+                return _port;
             }
         }
 
@@ -60,7 +60,7 @@ namespace Sqlcollaborative.Dbatools.Parameter
         {
             get
             {
-                return _NetworkProtocol;
+                return _networkProtocol;
             }
         }
 
@@ -72,7 +72,7 @@ namespace Sqlcollaborative.Dbatools.Parameter
         {
             get
             {
-                return Utility.Validation.IsLocalhost(_ComputerName);
+                return Utility.Validation.IsLocalhost(_computerName);
             }
         }
 
@@ -84,9 +84,9 @@ namespace Sqlcollaborative.Dbatools.Parameter
         {
             get
             {
-                string temp = _ComputerName;
-                if (_Port > 0) { temp += (":" + _Port); }
-                if (!String.IsNullOrEmpty(_InstanceName)) { temp += ("\\" + _InstanceName); }
+                string temp = _computerName;
+                if (_port > 0) { temp += (":" + _port); }
+                if (!String.IsNullOrEmpty(_instanceName)) { temp += ("\\" + _instanceName); }
                 return temp;
             }
         }
@@ -99,12 +99,12 @@ namespace Sqlcollaborative.Dbatools.Parameter
         {
             get
             {
-                string temp = _ComputerName;
-                if (_NetworkProtocol == SqlConnectionProtocol.NP) { temp = "NP:" + temp; }
-                if (_NetworkProtocol == SqlConnectionProtocol.TCP) { temp = "TCP:" + temp; }
-                if (!String.IsNullOrEmpty(_InstanceName) && _Port > 0) { return String.Format(@"{0}\{1},{2}", temp, _InstanceName, _Port); }
-                if (_Port > 0) { return temp + "," + _Port; }
-                if (!String.IsNullOrEmpty(_InstanceName)) { return temp + "\\" + _InstanceName; }
+                string temp = _computerName;
+                if (_networkProtocol == SqlConnectionProtocol.NP) { temp = "NP:" + temp; }
+                if (_networkProtocol == SqlConnectionProtocol.TCP) { temp = "TCP:" + temp; }
+                if (!String.IsNullOrEmpty(_instanceName) && _port > 0) { return String.Format(@"{0}\{1},{2}", temp, _instanceName, _port); }
+                if (_port > 0) { return temp + "," + _port; }
+                if (!String.IsNullOrEmpty(_instanceName)) { return temp + "\\" + _instanceName; }
                 return temp;
             }
         }
@@ -115,7 +115,7 @@ namespace Sqlcollaborative.Dbatools.Parameter
         [ParameterContract(ParameterContractType.Field, ParameterContractBehavior.Mandatory)]
         public string SqlComputerName
         {
-            get { return "[" + _ComputerName + "]"; }
+            get { return "[" + _computerName + "]"; }
         }
 
         /// <summary>
@@ -126,9 +126,9 @@ namespace Sqlcollaborative.Dbatools.Parameter
         {
             get
             {
-                if (String.IsNullOrEmpty(_InstanceName))
+                if (String.IsNullOrEmpty(_instanceName))
                     return "[MSSQLSERVER]";
-                return "[" + _InstanceName + "]";
+                return "[" + _instanceName + "]";
             }
         }
 
@@ -140,8 +140,8 @@ namespace Sqlcollaborative.Dbatools.Parameter
         {
             get
             {
-                if (String.IsNullOrEmpty(_InstanceName)) { return "[" + _ComputerName + "]"; }
-                return "[" + _ComputerName + "\\" + _InstanceName + "]";
+                if (String.IsNullOrEmpty(_instanceName)) { return "[" + _computerName + "]"; }
+                return "[" + _computerName + "\\" + _instanceName + "]";
             }
         }
 
@@ -158,10 +158,10 @@ namespace Sqlcollaborative.Dbatools.Parameter
         public object InputObject;
         #endregion Fields of contract
 
-        private string _ComputerName;
-        private string _InstanceName;
-        private int _Port;
-        private SqlConnectionProtocol _NetworkProtocol = SqlConnectionProtocol.Any;
+        private readonly string _computerName;
+        private readonly string _instanceName;
+        private readonly int _port;
+        private readonly SqlConnectionProtocol _networkProtocol = SqlConnectionProtocol.Any;
 
         #region Uncontracted properties
         /// <summary>
@@ -227,33 +227,33 @@ namespace Sqlcollaborative.Dbatools.Parameter
         /// <summary>
         /// Converts the parameter class to its full name
         /// </summary>
-        /// <param name="Input">The parameter class object to convert</param>
+        /// <param name="input">The parameter class object to convert</param>
         [ParameterContract(ParameterContractType.Operator, ParameterContractBehavior.Conversion)]
-        public static implicit operator string(DbaInstanceParameter Input)
+        public static implicit operator string(DbaInstanceParameter input)
         {
-            return Input.FullName;
+            return input.FullName;
         }
 
         #region Constructors
         /// <summary>
         /// Creates a DBA Instance Parameter from string
         /// </summary>
-        /// <param name="Name">The name of the instance</param>
-        public DbaInstanceParameter(string Name)
+        /// <param name="name">The name of the instance</param>
+        public DbaInstanceParameter(string name)
         {
-            InputObject = Name;
+            InputObject = name;
 
-            if (string.IsNullOrWhiteSpace(Name))
+            if (string.IsNullOrWhiteSpace(name))
                 throw new BloodyHellGiveMeSomethingToWorkWithException("Please provide an instance name", "DbaInstanceParameter");
 
-            if (Name == ".")
+            if (name == ".")
             {
-                _ComputerName = Name;
-                _NetworkProtocol = SqlConnectionProtocol.NP;
+                _computerName = name;
+                _networkProtocol = SqlConnectionProtocol.NP;
                 return;
             }
 
-            string tempString = Name.Trim();
+            string tempString = name.Trim();
             tempString = Regex.Replace(tempString, @"^\[(.*)\]$", "$1");
 
             // Named Pipe path notation interpretation
@@ -261,12 +261,12 @@ namespace Sqlcollaborative.Dbatools.Parameter
             {
                 try
                 {
-                    _NetworkProtocol = SqlConnectionProtocol.NP;
+                    _networkProtocol = SqlConnectionProtocol.NP;
 
-                    _ComputerName = Regex.Match(tempString, @"^\\\\([^\\]+)\\").Groups[1].Value;
+                    _computerName = Regex.Match(tempString, @"^\\\\([^\\]+)\\").Groups[1].Value;
 
                     if (Regex.IsMatch(tempString, @"\\MSSQL\$[^\\]+\\", RegexOptions.IgnoreCase))
-                        _InstanceName = Regex.Match(tempString, @"\\MSSQL\$([^\\]+)\\", RegexOptions.IgnoreCase).Groups[1].Value;
+                        _instanceName = Regex.Match(tempString, @"\\MSSQL\$([^\\]+)\\", RegexOptions.IgnoreCase).Groups[1].Value;
                 }
                 catch (Exception e)
                 {
@@ -282,16 +282,16 @@ namespace Sqlcollaborative.Dbatools.Parameter
                 System.Data.SqlClient.SqlConnectionStringBuilder connectionString =
                     new System.Data.SqlClient.SqlConnectionStringBuilder(tempString);
                 DbaInstanceParameter tempParam = new DbaInstanceParameter(connectionString.DataSource);
-                _ComputerName = tempParam.ComputerName;
+                _computerName = tempParam.ComputerName;
                 if (tempParam.InstanceName != "MSSQLSERVER")
                 {
-                    _InstanceName = tempParam.InstanceName;
+                    _instanceName = tempParam.InstanceName;
                 }
                 if (tempParam.Port != 1433)
                 {
-                    _Port = tempParam.Port;
+                    _port = tempParam.Port;
                 }
-                _NetworkProtocol = tempParam.NetworkProtocol;
+                _networkProtocol = tempParam.NetworkProtocol;
 
                 IsConnectionString = true;
 
@@ -299,20 +299,20 @@ namespace Sqlcollaborative.Dbatools.Parameter
             }
             catch (ArgumentException ex)
             {
-                string name = "unknown";
+                string argName = "unknown";
                 try
                 {
-                    name = ex.TargetSite.GetParameters()[0].Name;
+                    argName = ex.TargetSite.GetParameters()[0].Name;
                 }
                 catch
                 {
                 }
-                if (name == "keyword")
+                if (argName == "keyword")
                 {
                     throw;
                 }
             }
-            catch (FormatException ex)
+            catch (FormatException)
             {
                 throw;
             }
@@ -321,12 +321,12 @@ namespace Sqlcollaborative.Dbatools.Parameter
             // Handle and clear protocols. Otherwise it'd make port detection unneccessarily messy
             if (Regex.IsMatch(tempString, "^TCP:", RegexOptions.IgnoreCase)) //TODO: Use case insinsitive String.BeginsWith()
             {
-                _NetworkProtocol = SqlConnectionProtocol.TCP;
+                _networkProtocol = SqlConnectionProtocol.TCP;
                 tempString = tempString.Substring(4);
             }
             if (Regex.IsMatch(tempString, "^NP:", RegexOptions.IgnoreCase)) // TODO: Use case insinsitive String.BeginsWith()
             {
-                _NetworkProtocol = SqlConnectionProtocol.NP;
+                _networkProtocol = SqlConnectionProtocol.NP;
                 tempString = tempString.Substring(3);
             }
 
@@ -335,32 +335,28 @@ namespace Sqlcollaborative.Dbatools.Parameter
             {
                 if (Regex.IsMatch(tempString, @"[:,]\d{1,5}$") && !Regex.IsMatch(tempString, RegexHelper.IPv6) && ((tempString.Split(':').Length == 2) || (tempString.Split(',').Length == 2)))
                 {
-                    char delimiter;
-                    if (Regex.IsMatch(tempString, @"[:]\d{1,5}$"))
-                        delimiter = ':';
-                    else
-                        delimiter = ',';
+                    var delimiter = Regex.IsMatch(tempString, @"[:]\d{1,5}$") ? ':' : ',';
 
                     try
                     {
-                        Int32.TryParse(tempString.Split(delimiter)[1], out _Port);
-                        if (_Port > 65535) { throw new PSArgumentException("Failed to parse instance name: " + tempString); }
+                        Int32.TryParse(tempString.Split(delimiter)[1], out _port);
+                        if (_port > 65535) { throw new PSArgumentException("Failed to parse instance name: " + tempString); }
                         tempString = tempString.Split(delimiter)[0];
                     }
                     catch
                     {
-                        throw new PSArgumentException("Failed to parse instance name: " + Name);
+                        throw new PSArgumentException("Failed to parse instance name: " + name);
                     }
                 }
 
                 if (Utility.Validation.IsValidComputerTarget(tempString))
                 {
-                    _ComputerName = tempString;
+                    _computerName = tempString;
                 }
 
                 else
                 {
-                    throw new PSArgumentException("Failed to parse instance name: " + Name);
+                    throw new PSArgumentException("Failed to parse instance name: " + name);
                 }
             }
 
@@ -372,101 +368,93 @@ namespace Sqlcollaborative.Dbatools.Parameter
 
                 if (Regex.IsMatch(tempComputerName, @"[:,]\d{1,5}$") && !Regex.IsMatch(tempComputerName, RegexHelper.IPv6))
                 {
-                    char delimiter;
-                    if (Regex.IsMatch(tempComputerName, @"[:]\d{1,5}$"))
-                        delimiter = ':';
-                    else
-                        delimiter = ',';
+                    var delimiter = Regex.IsMatch(tempComputerName, @"[:]\d{1,5}$") ? ':' : ',';
 
                     try
                     {
-                        Int32.TryParse(tempComputerName.Split(delimiter)[1], out _Port);
-                        if (_Port > 65535) { throw new PSArgumentException("Failed to parse instance name: " + Name); }
+                        Int32.TryParse(tempComputerName.Split(delimiter)[1], out _port);
+                        if (_port > 65535) { throw new PSArgumentException("Failed to parse instance name: " + name); }
                         tempComputerName = tempComputerName.Split(delimiter)[0];
                     }
                     catch
                     {
-                        throw new PSArgumentException("Failed to parse instance name: " + Name);
+                        throw new PSArgumentException("Failed to parse instance name: " + name);
                     }
                 }
                 else if (Regex.IsMatch(tempInstanceName, @"[:,]\d{1,5}$") && !Regex.IsMatch(tempInstanceName, RegexHelper.IPv6))
                 {
-                    char delimiter;
-                    if (Regex.IsMatch(tempString, @"[:]\d{1,5}$"))
-                        delimiter = ':';
-                    else
-                        delimiter = ',';
+                    var delimiter = Regex.IsMatch(tempString, @"[:]\d{1,5}$") ? ':' : ',';
 
                     try
                     {
-                        Int32.TryParse(tempInstanceName.Split(delimiter)[1], out _Port);
-                        if (_Port > 65535) { throw new PSArgumentException("Failed to parse instance name: " + Name); }
+                        Int32.TryParse(tempInstanceName.Split(delimiter)[1], out _port);
+                        if (_port > 65535) { throw new PSArgumentException("Failed to parse instance name: " + name); }
                         tempInstanceName = tempInstanceName.Split(delimiter)[0];
                     }
                     catch
                     {
-                        throw new PSArgumentException("Failed to parse instance name: " + Name);
+                        throw new PSArgumentException("Failed to parse instance name: " + name);
                     }
                 }
 
                 if (Utility.Validation.IsValidComputerTarget(tempComputerName) && Utility.Validation.IsValidInstanceName(tempInstanceName, true))
                 {
-                    _ComputerName = tempComputerName;
+                    _computerName = tempComputerName;
                     if ((tempInstanceName.ToLower() != "default") && (tempInstanceName.ToLower() != "mssqlserver"))
-                        _InstanceName = tempInstanceName;
+                        _instanceName = tempInstanceName;
                 }
 
                 else
                 {
-                    throw new PSArgumentException(string.Format("Failed to parse instance name: {0}. Computer Name: {1}, Instance {2}", Name, tempComputerName, tempInstanceName));
+                    throw new PSArgumentException(string.Format("Failed to parse instance name: {0}. Computer Name: {1}, Instance {2}", name, tempComputerName, tempInstanceName));
                 }
             }
 
             // Case: Bad input
-            else { throw new PSArgumentException("Failed to parse instance name: " + Name); }
+            else { throw new PSArgumentException("Failed to parse instance name: " + name); }
         }
 
         /// <summary>
         /// Creates a DBA Instance Parameter from an IPAddress
         /// </summary>
-        /// <param name="Address"></param>
-        public DbaInstanceParameter(IPAddress Address)
+        /// <param name="address"></param>
+        public DbaInstanceParameter(IPAddress address)
         {
-            _ComputerName = Address.ToString();
+            _computerName = address.ToString();
         }
 
         /// <summary>
         /// Creates a DBA Instance Parameter from the reply to a ping
         /// </summary>
-        /// <param name="Ping">The result of a ping</param>
-        public DbaInstanceParameter(PingReply Ping)
+        /// <param name="ping">The result of a ping</param>
+        public DbaInstanceParameter(PingReply ping)
         {
-            _ComputerName = Ping.Address.ToString();
+            _computerName = ping.Address.ToString();
         }
 
         /// <summary>
         /// Creates a DBA Instance Parameter from the result of a dns resolution
         /// </summary>
-        /// <param name="Entry">The result of a dns resolution, to be used for targetting the default instance</param>
-        public DbaInstanceParameter(IPHostEntry Entry)
+        /// <param name="entry">The result of a dns resolution, to be used for targetting the default instance</param>
+        public DbaInstanceParameter(IPHostEntry entry)
         {
-            _ComputerName = Entry.HostName;
+            _computerName = entry.HostName;
         }
 
         /// <summary>
         /// Creates a DBA Instance parameter from any object
         /// </summary>
-        /// <param name="Input">Object to parse</param>
-        public DbaInstanceParameter(object Input)
+        /// <param name="input">Object to parse</param>
+        public DbaInstanceParameter(object input)
         {
-            InputObject = Input;
-            PSObject tempInput = new PSObject(Input);
-            string typeName = "";
+            InputObject = input;
+            PSObject tempInput = new PSObject(input);
+            string typeName;
 
             try { typeName = tempInput.TypeNames[0].ToLower(); }
             catch
             {
-                throw new PSArgumentException("Failed to interpret input as Instance: " + Input);
+                throw new PSArgumentException("Failed to interpret input as Instance: " + input);
             }
 
             typeName = typeName.Replace("Deserialized.", "");
@@ -476,9 +464,9 @@ namespace Sqlcollaborative.Dbatools.Parameter
                 case "microsoft.sqlserver.management.smo.server":
                     try
                     {
-                        if (tempInput.Properties["NetName"] != null) { _ComputerName = (string)tempInput.Properties["NetName"].Value; }
-                        else { _ComputerName = (new DbaInstanceParameter((string)tempInput.Properties["DomainInstanceName"].Value)).ComputerName; }
-                        _InstanceName = (string)tempInput.Properties["InstanceName"].Value;
+                        if (tempInput.Properties["NetName"] != null) { _computerName = (string)tempInput.Properties["NetName"].Value; }
+                        else { _computerName = (new DbaInstanceParameter((string)tempInput.Properties["DomainInstanceName"].Value)).ComputerName; }
+                        _instanceName = (string)tempInput.Properties["InstanceName"].Value;
                         PSObject tempObject = new PSObject(tempInput.Properties["ConnectionContext"].Value);
 
                         string tempConnectionString = (string)tempObject.Properties["ConnectionString"].Value;
@@ -486,44 +474,41 @@ namespace Sqlcollaborative.Dbatools.Parameter
 
                         if (Regex.IsMatch(tempConnectionString, @",\d{1,5}$") && (tempConnectionString.Split(',').Length == 2))
                         {
-                            try { Int32.TryParse(tempConnectionString.Split(',')[1], out _Port); }
+                            try { Int32.TryParse(tempConnectionString.Split(',')[1], out _port); }
                             catch (Exception e)
                             {
                                 throw new PSArgumentException("Failed to parse port number on connection string: " + tempConnectionString, e);
                             }
-                            if (_Port > 65535) { throw new PSArgumentException("Failed to parse port number on connection string: " + tempConnectionString); }
+                            if (_port > 65535) { throw new PSArgumentException("Failed to parse port number on connection string: " + tempConnectionString); }
                         }
                     }
                     catch (Exception e)
                     {
-                        throw new PSArgumentException("Failed to interpret input as Instance: " + Input + " : " + e.Message, e);
+                        throw new PSArgumentException("Failed to interpret input as Instance: " + input + " : " + e.Message, e);
                     }
                     break;
                 case "microsoft.sqlserver.management.smo.linkedserver":
                     try
                     {
-                        _ComputerName = (string)tempInput.Properties["Name"].Value;
+                        _computerName = (string)tempInput.Properties["Name"].Value;
                     }
                     catch (Exception e)
                     {
-                        throw new PSArgumentException("Failed to interpret input as Instance: " + Input, e);
+                        throw new PSArgumentException("Failed to interpret input as Instance: " + input, e);
                     }
                     break;
                 case "microsoft.activedirectory.management.adcomputer":
                     try
                     {
-                        _ComputerName = (string)tempInput.Properties["Name"].Value;
+                        _computerName = (string)tempInput.Properties["Name"].Value;
 
                         // We prefer using the dnshostname whenever possible
-                        if (tempInput.Properties["DNSHostName"].Value != null)
-                        {
-                            if (!String.IsNullOrEmpty((string)tempInput.Properties["DNSHostName"].Value))
-                                _ComputerName = (string)tempInput.Properties["DNSHostName"].Value;
-                        }
+                        if (!String.IsNullOrEmpty((string) tempInput.Properties["DNSHostName"].Value))
+                            _computerName = (string)tempInput.Properties["DNSHostName"].Value;
                     }
                     catch (Exception e)
                     {
-                        throw new PSArgumentException("Failed to interpret input as Instance: " + Input, e);
+                        throw new PSArgumentException("Failed to interpret input as Instance: " + input, e);
                     }
                     break;
                 case "microsoft.sqlserver.management.registeredservers.registeredserver":
@@ -533,21 +518,21 @@ namespace Sqlcollaborative.Dbatools.Parameter
                         //so we don't have to re-invent the wheel on instance name / port parsing
                         DbaInstanceParameter parm =
                             new DbaInstanceParameter((string) tempInput.Properties["ServerName"].Value);
-                        _ComputerName = parm.ComputerName;
+                        _computerName = parm.ComputerName;
 
                         if (parm.InstanceName != "MSSQLSERVER")
-                            _InstanceName = parm.InstanceName;
+                            _instanceName = parm.InstanceName;
 
                         if (parm.Port != 1433)
-                            _Port = parm.Port;
+                            _port = parm.Port;
                     }
                     catch (Exception e)
                     {
-                        throw new PSArgumentException("Failed to interpret input as Instance: " + Input, e);
+                        throw new PSArgumentException("Failed to interpret input as Instance: " + input, e);
                     }
                     break;
                 default:
-                    throw new PSArgumentException("Failed to interpret input as Instance: " + Input);
+                    throw new PSArgumentException("Failed to interpret input as Instance: " + input);
             }
         }
         #endregion Constructors
