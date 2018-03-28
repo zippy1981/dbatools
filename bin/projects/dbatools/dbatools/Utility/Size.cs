@@ -11,7 +11,7 @@ namespace Sqlcollaborative.Dbatools.Utility
         /// <summary>
         /// Number of bytes contained in whatever object uses this object as a property
         /// </summary>
-        public long Byte { get; set; }
+        public long Byte { get; }
 
         /// <summary>
         /// Kilobyte representation of the bytes
