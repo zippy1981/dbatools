@@ -175,6 +175,7 @@ namespace Sqlcollaborative.Dbatools.Computer
         /// <summary>
         /// The total capacity in GB
         /// </summary>
+        /// <seealso cref="Size.Gigabyte"/>
         public double SizeInGB
         {
             get
@@ -186,6 +187,7 @@ namespace Sqlcollaborative.Dbatools.Computer
         /// <summary>
         /// The free space in GB
         /// </summary>
+        /// <seealso cref="Size.Gigabyte"/>
         public double FreeInGB
         {
             get
@@ -197,6 +199,7 @@ namespace Sqlcollaborative.Dbatools.Computer
         /// <summary>
         /// The total capacity in TB
         /// </summary>
+        /// <seealso cref="Size.Terabyte"/>
         public double SizeInTB
         {
             get

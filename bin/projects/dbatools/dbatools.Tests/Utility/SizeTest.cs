@@ -135,11 +135,27 @@ namespace Sqlcollaborative.Dbatools.Utility
             Assert.AreEqual("5.10 TB", size.ToString());
         }
 
+        [DataRow(23)]
+        [DataRow(72)]
+        [DataRow(100)]
         [TestMethod]
-        public void TestGigabytes()
+        public void TestGigabytes(int gb)
         {
-            var size = new Size(72 * (long)Math.Pow(1024, 3));
-            Assert.AreEqual("72.00 GB", size.ToString());
+            var size = new Size(gb * (long)Math.Pow(1024, 3));
+            Assert.AreEqual(gb, size.Gigabyte);
+            Assert.AreEqual(string.Format("{0}.00 GB", gb), size.ToString());
+        }
+
+        [DataRow(23)]
+        [DataRow(72)]
+        [DataRow(100)]
+        [TestMethod]
+        public void TestPetabytes(int pb)
+        {
+            var size = new Size(pb * (long)Math.Pow(1024, 5));
+            var tb = pb * 1024;
+            Assert.AreEqual(tb, size.Terabyte);
+            Assert.AreEqual(string.Format("{0:n2} TB", tb), size.ToString());
         }
 
         [TestMethod]

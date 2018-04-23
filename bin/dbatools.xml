@@ -103,16 +103,19 @@
             <summary>
             The total capacity in GB
             </summary>
+            <seealso cref="P:Sqlcollaborative.Dbatools.Utility.Size.Gigabyte"/>
         </member>
         <member name="P:Sqlcollaborative.Dbatools.Computer.DiskSpace.FreeInGB">
             <summary>
             The free space in GB
             </summary>
+            <seealso cref="P:Sqlcollaborative.Dbatools.Utility.Size.Gigabyte"/>
         </member>
         <member name="P:Sqlcollaborative.Dbatools.Computer.DiskSpace.SizeInTB">
             <summary>
             The total capacity in TB
             </summary>
+            <seealso cref="P:Sqlcollaborative.Dbatools.Utility.Size.Terabyte"/>
         </member>
         <member name="P:Sqlcollaborative.Dbatools.Computer.DiskSpace.FreeInTB">
             <summary>
@@ -2080,17 +2083,6 @@
             <summary>
             The parameter class that did the throwing
             </summary>
-        </member>
-        <member name="M:Sqlcollaborative.Dbatools.Exceptions.BloodyHellGiveMeSomethingToWorkWithException.#ctor">
-            <summary>
-            Creates an empty exception
-            </summary>
-        </member>
-        <member name="M:Sqlcollaborative.Dbatools.Exceptions.BloodyHellGiveMeSomethingToWorkWithException.#ctor(System.String)">
-            <summary>
-            Creates an exception with a simple message
-            </summary>
-            <param name="Message">The message to tell</param>
         </member>
         <member name="M:Sqlcollaborative.Dbatools.Exceptions.BloodyHellGiveMeSomethingToWorkWithException.#ctor(System.String,System.Exception)">
             <summary>
