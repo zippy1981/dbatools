@@ -6,9 +6,9 @@ codecov -f PesterResultsCoverage.json --flag "ps,$($env:SCENARIO.toLower())" | O
 # DLL unittests only in default scenario
 if($env:SCENARIO -eq 'default') {
   Write-Host -Object "appveyor.post: DLL unittests"  -ForeGroundColor DarkGreen
-  $msTestArgs = [string]::Join('', @(
-    '/logger:Appveyor',
+  $msTestArgs = [string]::Join(' ', @(
     'bin\projects\dbatools\dbatools.Tests\bin\Debug\dbatools.Tests.dll',
+    '/logger:Appveyor',
     '/TestAdapterPath:bin\projects\dbatools\packages\MSTest.TestAdapter.1.2.1\build\_common',
     '/Enablecodecoverage'
   ))
