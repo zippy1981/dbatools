@@ -16,15 +16,12 @@ if($env:SCENARIO -eq 'default') {
   OpenCover.Console.exe `
     -register:user `
     -target:"vstest.console.exe" `
-    -targetargs: $msTestArgs `
+    -targetargs:"$msTestArgs" `
     -output:"coverage.xml" `
     -filter:"+[dbatools]*" `
     -returntargetcode
   Push-AppveyorArtifact coverage.xml -FileName "OpenCover C# Report"
   codecov -f "coverage.xml" --flag "dll,$($env:SCENARIO.toLower())" | Out-Null
-
-  Write-Host -Object "Listing Loggers" -ForeGroundColor Magenta
-  vstest.console.exe /ListLoggers
 }
 $sw.Stop()
 Update-AppveyorTest -Name "appveyor.post" -Framework NUnit -FileName "appveyor.post.ps1" -Outcome Passed -Duration $sw.ElapsedMilliseconds
