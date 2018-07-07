@@ -31,7 +31,7 @@ function Test-DbaIdentityUsage {
 
         .NOTES
             Author: Brandon Abshire, netnerds.net
-            Tags: Identity
+            Tags: Identity, Table, Column
 
             Website: https://dbatools.io
             Copyright: (C) Chrissy LeMaire, clemaire@gmail.com
@@ -146,8 +146,7 @@ function Test-DbaIdentityUsage {
 
     process {
         foreach ($instance in $SqlInstance) {
-            Write-Message -Level Verbose -Message "Attempting to connect to $instance"
-
+            Write-Message -Level Verbose -Message "Connecting to $instance"
             try {
                 $server = Connect-SqlInstance -SqlInstance $instance -SqlCredential $SqlCredential -MinimumVersion 10
             }
