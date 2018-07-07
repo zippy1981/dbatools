@@ -12,27 +12,24 @@ namespace Sqlcollaborative.Dbatools.Utility
         /// Constructs a generic timestamp object wrapper from an input timestamp object.
         /// </summary>
         /// <param name="Timestamp">The timestamp to wrap</param>
-        public DbaDateTime(DateTime Timestamp)
+        public DbaDateTime(DateTime Timestamp) : base(Timestamp)
         {
-            _timestamp = Timestamp;
         }
 
         /// <summary>
         /// Parses a string into a datetime object.
         /// </summary>
         /// <param name="Time">The time-string to parse</param>
-        public DbaDateTime(string Time)
+        public DbaDateTime(string Time): base(Time)
         {
-            _timestamp = ParseDateTime(Time);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="ticks"></param>
-        public DbaDateTime(long ticks)
+        public DbaDateTime(long ticks): base(ticks)
         {
-            _timestamp = new DateTime(ticks);
         }
 
         /// <summary>
@@ -40,9 +37,8 @@ namespace Sqlcollaborative.Dbatools.Utility
         /// </summary>
         /// <param name="ticks"></param>
         /// <param name="kind"></param>
-        public DbaDateTime(long ticks, System.DateTimeKind kind)
+        public DbaDateTime(long ticks, System.DateTimeKind kind): base(ticks, kind)
         {
-            _timestamp = new DateTime(ticks, kind);
         }
 
         /// <summary>
@@ -51,9 +47,8 @@ namespace Sqlcollaborative.Dbatools.Utility
         /// <param name="year"></param>
         /// <param name="month"></param>
         /// <param name="day"></param>
-        public DbaDateTime(int year, int month, int day)
+        public DbaDateTime(int year, int month, int day): base(year, month, day)
         {
-            _timestamp = new DateTime(year, month, day);
         }
 
         /// <summary>
@@ -63,9 +58,8 @@ namespace Sqlcollaborative.Dbatools.Utility
         /// <param name="month"></param>
         /// <param name="day"></param>
         /// <param name="calendar"></param>
-        public DbaDateTime(int year, int month, int day, System.Globalization.Calendar calendar)
+        public DbaDateTime(int year, int month, int day, System.Globalization.Calendar calendar): base(year, month, day, calendar)
         {
-            _timestamp = new DateTime(year, month, day, calendar);
         }
 
         /// <summary>
@@ -77,9 +71,8 @@ namespace Sqlcollaborative.Dbatools.Utility
         /// <param name="hour"></param>
         /// <param name="minute"></param>
         /// <param name="second"></param>
-        public DbaDateTime(int year, int month, int day, int hour, int minute, int second)
+        public DbaDateTime(int year, int month, int day, int hour, int minute, int second): base(year, month, day, hour, minute, second)
         {
-            _timestamp = new DateTime(year, month, day, hour, minute, second);
         }
 
         /// <summary>
@@ -92,9 +85,8 @@ namespace Sqlcollaborative.Dbatools.Utility
         /// <param name="minute"></param>
         /// <param name="second"></param>
         /// <param name="kind"></param>
-        public DbaDateTime(int year, int month, int day, int hour, int minute, int second, System.DateTimeKind kind)
+        public DbaDateTime(int year, int month, int day, int hour, int minute, int second, System.DateTimeKind kind): base(year, month, day, hour, minute, second, kind)
         {
-            _timestamp = new DateTime(year, month, day, hour, minute, second, kind);
         }
 
         /// <summary>
@@ -107,9 +99,8 @@ namespace Sqlcollaborative.Dbatools.Utility
         /// <param name="minute"></param>
         /// <param name="second"></param>
         /// <param name="calendar"></param>
-        public DbaDateTime(int year, int month, int day, int hour, int minute, int second, System.Globalization.Calendar calendar)
+        public DbaDateTime(int year, int month, int day, int hour, int minute, int second, System.Globalization.Calendar calendar): base(year, month, day, hour, minute, second, calendar)
         {
-            _timestamp = new DateTime(year, month, day, hour, minute, second, calendar);
         }
 
         /// <summary>
@@ -122,9 +113,8 @@ namespace Sqlcollaborative.Dbatools.Utility
         /// <param name="minute"></param>
         /// <param name="second"></param>
         /// <param name="millisecond"></param>
-        public DbaDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond)
+        public DbaDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond): base(year, month, day, hour, minute, second, millisecond)
         {
-            _timestamp = new DateTime(year, month, day, hour, minute, second, millisecond);
         }
 
         /// <summary>
@@ -138,9 +128,8 @@ namespace Sqlcollaborative.Dbatools.Utility
         /// <param name="second"></param>
         /// <param name="millisecond"></param>
         /// <param name="kind"></param>
-        public DbaDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, System.DateTimeKind kind)
+        public DbaDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, System.DateTimeKind kind): base(year, month, day, hour, minute, second, millisecond, kind)
         {
-            _timestamp = new DateTime(year, month, day, hour, minute, second, millisecond, kind);
         }
 
         /// <summary>
@@ -154,9 +143,8 @@ namespace Sqlcollaborative.Dbatools.Utility
         /// <param name="second"></param>
         /// <param name="millisecond"></param>
         /// <param name="calendar"></param>
-        public DbaDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, System.Globalization.Calendar calendar)
+        public DbaDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, System.Globalization.Calendar calendar): base(year, month, day, hour, minute, second, millisecond, calendar)
         {
-            _timestamp = new DateTime(year, month, day, hour, minute, second, millisecond, calendar);
         }
 
         /// <summary>
@@ -171,9 +159,8 @@ namespace Sqlcollaborative.Dbatools.Utility
         /// <param name="millisecond"></param>
         /// <param name="calendar"></param>
         /// <param name="kind"></param>
-        public DbaDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, System.Globalization.Calendar calendar, System.DateTimeKind kind)
+        public DbaDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, System.Globalization.Calendar calendar, System.DateTimeKind kind): base(year, month, day, hour, minute, second, millisecond, calendar, kind)
         {
-            _timestamp = new DateTime(year, month, day, hour, minute, second, millisecond, calendar, kind);
         }
         #endregion Constructors
 

@@ -7,7 +7,8 @@ namespace Sqlcollaborative.Dbatools.Utility
     /// <summary>
     /// Base class for wrapping around a DateTime object
     /// </summary>
-    public class DbaDateTimeBase : IComparable, IComparable<DateTime>, IEquatable<DateTime> // IFormattable,
+    public class DbaDateTimeBase : IComparable, IComparable<DateTime>, IEquatable<DateTime>
+// IFormattable,
     {
         #region Properties
         /// <summary>
@@ -121,13 +122,6 @@ namespace Sqlcollaborative.Dbatools.Utility
         #endregion Properties
 
         #region Constructors
-        /// <summary>
-        /// Constructor that should never be called, since this class should never be instantiated. It's there for implicit calls on child classes.
-        /// </summary>
-        public DbaDateTimeBase()
-        {
-
-        }
 
         /// <summary>
         /// Constructs a generic timestamp object wrapper from an input timestamp object.
@@ -707,7 +701,7 @@ namespace Sqlcollaborative.Dbatools.Utility
         /// <returns></returns>
         public static DbaDateTimeBase operator +(DbaDateTimeBase Timestamp, TimeSpan Duration)
         {
-            return Timestamp.Add(Duration);
+            return (DbaDateTimeBase)(Timestamp).Add(Duration);
         }
 
         /// <summary>
@@ -718,7 +712,29 @@ namespace Sqlcollaborative.Dbatools.Utility
         /// <returns></returns>
         public static DbaDateTimeBase operator -(DbaDateTimeBase Timestamp, TimeSpan Duration)
         {
-            return Timestamp.Subtract(Duration);
+            return (DbaDateTimeBase)Timestamp.Subtract(Duration);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Timestamp1"></param>
+        /// <param name="Timestamp2"></param>
+        /// <returns></returns>
+        public static bool operator ==(DbaDateTimeBase Timestamp1, DateTime Timestamp2)
+        {
+            return (Timestamp1.GetBaseObject().Equals(Timestamp2));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Timestamp1"></param>
+        /// <param name="Timestamp2"></param>
+        /// <returns></returns>
+        public static bool operator !=(DbaDateTimeBase Timestamp1, DateTime Timestamp2)
+        {
+            return (!Timestamp1.GetBaseObject().Equals(Timestamp2));
         }
 
         /// <summary>
@@ -793,7 +809,7 @@ namespace Sqlcollaborative.Dbatools.Utility
         /// Implicitly convert DbaDateTimeBase to DateTime
         /// </summary>
         /// <param name="Base">The source object to convert</param>
-        public static implicit operator DateTime(DbaDateTimeBase Base)
+        public static explicit operator DateTime(DbaDateTimeBase Base)
         {
             return Base.GetBaseObject();
         }
@@ -802,7 +818,7 @@ namespace Sqlcollaborative.Dbatools.Utility
         /// Implicitly convert DateTime to DbaDateTimeBase
         /// </summary>
         /// <param name="Base">The object to convert</param>
-        public static implicit operator DbaDateTimeBase(DateTime Base)
+        public static explicit operator DbaDateTimeBase(DateTime Base)
         {
             return new DbaDateTimeBase(Base.Ticks, Base.Kind);
         }
